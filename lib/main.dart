@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:expenses/components/TransactionList.dart';
 import 'package:flutter/material.dart';
 import 'package:expenses/components/TransactionForm.dart';
-import 'package:expenses/helpers/custom_colors.dart';
 import 'package:expenses/models/Transaction.dart';
 
 void main() => runApp(ExpensesApp());
@@ -13,6 +12,10 @@ class ExpensesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MyHomePage(),
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+        accentColor: Colors.teal
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -44,6 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       this._transactions.add(newTransaction);
     });
+
+    Navigator.of(context).pop();
   }
 
   void _openTransactionFormModal(BuildContext context) {
@@ -59,7 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Despesas Pessoais'),
-        backgroundColor: CustomColors.colorPrimary,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
@@ -75,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: double.infinity,
               child: Card(
                 child: Text('Gráfico'),
-                color: CustomColors.colorPrimary,
+                color: Theme.of(context).primaryColor,
                 elevation: 5,
               ),
             ),
@@ -85,7 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        backgroundColor: CustomColors.colorPrimary,
         onPressed: () => this._openTransactionFormModal(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

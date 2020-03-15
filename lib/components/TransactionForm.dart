@@ -1,4 +1,3 @@
-import 'package:expenses/helpers/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 class TransactionForm extends StatefulWidget {
@@ -47,8 +46,10 @@ class _TransactionFormState extends State<TransactionForm> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   FlatButton(
-                    child: Text('Nova Transação'),
-                    textColor: CustomColors.colorPrimary,
+                    child: Text(
+                      'Nova Transação',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
                     onPressed: this._submitForm,
                   ),
                 ],
