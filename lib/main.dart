@@ -17,12 +17,10 @@ class ExpensesApp extends StatelessWidget {
           accentColor: Colors.teal,
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
-            title: TextStyle(
-              fontFamily: 'OpenSans',
-              fontSize: 20,
-              fontWeight: FontWeight.bold
-            )
-          ),
+              title: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold)),
           appBarTheme: AppBarTheme(
               textTheme: ThemeData.light().textTheme.copyWith(
                   title: TextStyle(
@@ -40,15 +38,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-        id: 't1',
-        title: 'Novo Tênis de Corrida',
-        value: 310.76,
-        date: DateTime.now()),
-    Transaction(
-        id: 't2', title: 'Conta de luz', value: 211.30, date: DateTime.now()),
-  ];
+  final List<Transaction> _transactions = [];
 
   void _addTransaction(String title, double value) {
     final newTransaction = Transaction(
@@ -61,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
       this._transactions.add(newTransaction);
     });
 
-    Navigator.of(context).pop();
+    Navigator.of(this.context).pop();
   }
 
   void _openTransactionFormModal(BuildContext context) {
