@@ -56,17 +56,17 @@ class _MyHomePageState extends State<MyHomePage> {
         value: 89.99,
         date: DateTime.now().subtract(Duration(days: 2))),
     Transaction(
-        id: 't2',
+        id: 't3',
         title: 'iFood',
         value: 89.99,
         date: DateTime.now().subtract(Duration(days: 2))),
     Transaction(
-        id: 't2',
+        id: 't4',
         title: 'Uber',
         value: 25.12,
         date: DateTime.now().subtract(Duration(days: 3))),
     Transaction(
-        id: 't2',
+        id: 't5',
         title: 'Boleto Faculdade 12/12',
         value: 599.99,
         date: DateTime.now().subtract(Duration(days: 4))),
@@ -87,12 +87,17 @@ class _MyHomePageState extends State<MyHomePage> {
       value: value,
       date: date,
     );
-
     setState(() {
       this._transactions.add(newTransaction);
     });
 
     Navigator.of(this.context).pop();
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      this._transactions.removeWhere((transaction) => transaction.id == id);
+    });
   }
 
   void _openTransactionFormModal(BuildContext context) {
@@ -120,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(this._recentTransactions),
-            TransactionList(this._transactions),
+            TransactionList(this._transactions, this._deleteTransaction),
           ],
         ),
       ),
