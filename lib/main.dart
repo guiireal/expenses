@@ -19,10 +19,14 @@ class ExpensesApp extends StatelessWidget {
           accentColor: Colors.teal,
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
-              title: TextStyle(
+                title: TextStyle(
                   fontFamily: 'OpenSans',
                   fontSize: 20,
-                  fontWeight: FontWeight.bold)),
+                  fontWeight: FontWeight.bold,
+                ),
+                button:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
           appBarTheme: AppBarTheme(
               textTheme: ThemeData.light().textTheme.copyWith(
                   title: TextStyle(
@@ -43,29 +47,46 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
     Transaction(
         id: 't1',
-        title: 'Internet',
-        value: 96.99,
-        date: DateTime.now().subtract(Duration(days: 3))),
+        title: 'Conta de Luz',
+        value: 63.72,
+        date: DateTime.now().subtract(Duration(days: 1))),
+    Transaction(
+        id: 't2',
+        title: 'Conta de Internet',
+        value: 89.99,
+        date: DateTime.now().subtract(Duration(days: 2))),
     Transaction(
         id: 't2',
         title: 'iFood',
-        value: 89.90,
+        value: 89.99,
+        date: DateTime.now().subtract(Duration(days: 2))),
+    Transaction(
+        id: 't2',
+        title: 'Uber',
+        value: 25.12,
+        date: DateTime.now().subtract(Duration(days: 3))),
+    Transaction(
+        id: 't2',
+        title: 'Boleto Faculdade 12/12',
+        value: 599.99,
         date: DateTime.now().subtract(Duration(days: 4))),
   ];
 
   List<Transaction> get _recentTransactions {
     return this._transactions.where((transaction) {
-      return transaction.date
-          .isAfter(DateTime.now().subtract(Duration(days: 7)));
+      return transaction.date.isAfter(DateTime.now().subtract(
+        Duration(days: 7),
+      ));
     }).toList();
   }
 
-  void _addTransaction(String title, double value) {
+  void _addTransaction(String title, double value, DateTime date) {
     final newTransaction = Transaction(
-        id: Random().nextDouble().toString(),
-        title: title,
-        value: value,
-        date: DateTime.now());
+      id: Random().nextDouble().toString(),
+      title: title,
+      value: value,
+      date: date,
+    );
 
     setState(() {
       this._transactions.add(newTransaction);
