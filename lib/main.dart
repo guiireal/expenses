@@ -4,6 +4,7 @@ import 'package:expenses/components/TransactionList.dart';
 import 'package:flutter/material.dart';
 import 'package:expenses/components/TransactionForm.dart';
 import 'package:expenses/models/Transaction.dart';
+import 'package:flutter/services.dart';
 
 import 'components/Chart.dart';
 
@@ -15,24 +16,27 @@ class ExpensesApp extends StatelessWidget {
     return MaterialApp(
       home: MyHomePage(),
       theme: ThemeData(
-          primarySwatch: Colors.teal,
-          accentColor: Colors.teal,
-          fontFamily: 'Quicksand',
+        primarySwatch: Colors.teal,
+        accentColor: Colors.teal,
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              button:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+        appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
                 title: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-                button:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               ),
-          appBarTheme: AppBarTheme(
-              textTheme: ThemeData.light().textTheme.copyWith(
-                  title: TextStyle(
-                      fontFamily: 'OpenSans',
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold)))),
+        ),
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -71,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
         value: 599.99,
         date: DateTime.now().subtract(Duration(days: 4))),
   ];
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return this._transactions.where((transaction) {
@@ -110,22 +115,53 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text('Despesas Pessoais'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => this._openTransactionFormModal(context),
+        )
+      ],
+    );
+
+    final availableHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Despesas Pessoais'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => this._openTransactionFormModal(context),
-          )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(this._recentTransactions),
-            TransactionList(this._transactions, this._deleteTransaction),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Exibir Gráfico'),
+                Switch(
+                  value: this._showChart,
+                  onChanged: (value) {
+                    setState(() {
+                      this._showChart = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            if (this._showChart)
+              Container(
+                height: availableHeight * 0.3,
+                child: Chart(this._recentTransactions),
+              ),
+            if (!this._showChart)
+              Container(
+                height: availableHeight * 0.7,
+                child: TransactionList(
+                  this._transactions,
+                  this._deleteTransaction,
+                ),
+              ),
           ],
         ),
       ),
